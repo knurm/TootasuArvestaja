@@ -1,5 +1,6 @@
 package tootasuArvestajaGUI;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,11 +9,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.EventListenerList;
 
+import tootasuArvestaja.Arvestaja;
 import tootasuArvestaja.Tootaja;
 
 public class DetailsPanel extends JPanel {
@@ -33,15 +39,29 @@ public class DetailsPanel extends JPanel {
 		JLabel tunnipalkLabel = new JLabel("Tunnipalk: ");
 		JLabel mvmLabel = new JLabel("Maksuvaba miinimumi arvestamine: ");
 		JLabel kPLabel = new JLabel("Kogumispension: ");
+		JLabel valiTootajaLabel = new JLabel("Vali töötaja: ");
+		
 		
 		JTextField nameField = new JTextField(10);
 		JTextField pknimiField = new JTextField(10);
 		JTextField tunnipalkField = new JTextField(10);
 		JTextField mvmField = new JTextField(10);
 		JTextField kPField = new JTextField(10);
+		String[] nimekiri = {"Töötaja1", "Töötaja1", "Töötaja3"};
+		JComboBox valiTootajaComboBox = new JComboBox(nimekiri);
 		
-		
+		JButton addEmpBtn = new JButton("Lisa töötaja");
 		JButton addBtn = new JButton("Add");
+		
+		addEmpBtn.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				new AddEmpDialog(null, isEnabled(), "Lisa töötaja");
+				
+			}
+
+		});
 		
 		addBtn.addActionListener(new ActionListener() {
 
@@ -52,9 +72,9 @@ public class DetailsPanel extends JPanel {
 					Double mvm = Double.parseDouble(mvmField.getText());
 					Double kogumisP = Double.parseDouble(kPField.getText());
 					
-					Tootaja tootaja1 = new Tootaja(eesnimi, perenimi, tunnipalk, mvm, kogumisP);
+					//Tootaja tootaja1 = new Tootaja(eesnimi, perenimi, tunnipalk, mvm, kogumisP);
 					
-					String text = tootaja1 + "\n";
+					String text = Arvestaja.bruto(tunnipalk, mvm) + "\n";
 					
 					fireDetailEvent(new DetailEvent(this, text));
 			}
@@ -90,6 +110,10 @@ public class DetailsPanel extends JPanel {
 		gc.gridy = 4;
 		add(kPLabel, gc);
 		
+		gc.gridx = 0;
+		gc.gridy = 5;
+		add(valiTootajaLabel, gc);
+		
 		// COL2
 		gc.gridx = 1;
 		gc.gridy = 0;
@@ -111,16 +135,29 @@ public class DetailsPanel extends JPanel {
 		gc.gridy = 4;
 		add(kPField, gc);
 		
+		gc.gridx = 1;
+		gc.gridy = 5;
+		add(valiTootajaComboBox, gc);
+		
+		gc.gridx = 1;
+		gc.gridy = 6;
+		add(addEmpBtn, gc);
+		
 		//Final row
 		gc.weighty = 10;
 		
 		gc.anchor = GridBagConstraints.LAST_LINE_END;
 		gc.gridx = 1;
-		gc.gridy = 5;
+		gc.gridy = 7;
 		add(addBtn, gc);
 	
 	}
 	
+	protected void call() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void fireDetailEvent(DetailEvent event) {
 		Object[] listeners = listenerList.getListenerList();
 		

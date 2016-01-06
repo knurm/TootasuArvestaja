@@ -10,12 +10,13 @@ public class tootasuArvestajaGUI {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JFrame aken = new MainFrame("Töötasuarvestaja");
+				JFrame window = new MainFrame("Töötasuarvestaja");
 				
-				aken.setSize(700, 500);
-				aken.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				aken.setVisible(true);
-			}
+				window.setSize(700, 500);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setVisible(true);
+				
+			}	
 
 		});
 		

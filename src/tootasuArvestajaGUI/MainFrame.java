@@ -27,8 +27,6 @@ public class MainFrame extends JFrame {
 		detailsPanel.addDetailListener(new DetailListener() {
 			public void detailEventOccurred(DetailEvent event) {
 				String text = event.getText();
-				
-				textArea.append(text);
 			}
 		});
 		
@@ -36,7 +34,7 @@ public class MainFrame extends JFrame {
 		
 		aken.add(textArea, BorderLayout.CENTER);
 		aken.add(nupp, BorderLayout.SOUTH);
-		aken.add(detailsPanel, BorderLayout.WEST);
+		aken.add(detailsPanel, BorderLayout.CENTER);
 		
 		nupp.addActionListener(new ActionListener() {
 
