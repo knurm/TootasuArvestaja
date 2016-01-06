@@ -1,10 +1,10 @@
-package tootasuArvestajaGUI;
+package wageCalculatorGUI;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 
-public class tootasuArvestajaGUI {
+public class WageCalculatorGUI {
 	
 	public static void main(String[] args) {
 		

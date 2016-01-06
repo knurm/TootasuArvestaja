@@ -1,4 +1,4 @@
-package tootasuArvestajaGUI;
+package wageCalculatorGUI;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.EventListenerList;
 
-import tootasuArvestaja.Arvestaja;
-import tootasuArvestaja.Tootaja;
+import wageCalculator.Calculator;
+import wageCalculator.Employee;
 
 public class DetailsPanel extends JPanel {
 	
@@ -34,21 +34,12 @@ public class DetailsPanel extends JPanel {
 		
 		setBorder(BorderFactory.createTitledBorder("Arvestaja"));
 		
-		JLabel nameLabel = new JLabel("Eesnimi: ");
-		JLabel pknimiLabel = new JLabel("Perekonnanimi: ");
-		JLabel tunnipalkLabel = new JLabel("Tunnipalk: ");
-		JLabel mvmLabel = new JLabel("Maksuvaba miinimumi arvestamine: ");
-		JLabel kPLabel = new JLabel("Kogumispension: ");
-		JLabel valiTootajaLabel = new JLabel("Vali töötaja: ");
+		JLabel choosEmpLabel = new JLabel("Vali töötaja: ");
+		JLabel wHLabel = new JLabel("Töötatud tunnid: ");
 		
-		
-		JTextField nameField = new JTextField(10);
-		JTextField pknimiField = new JTextField(10);
-		JTextField tunnipalkField = new JTextField(10);
-		JTextField mvmField = new JTextField(10);
-		JTextField kPField = new JTextField(10);
-		String[] nimekiri = {"Töötaja1", "Töötaja1", "Töötaja3"};
-		JComboBox valiTootajaComboBox = new JComboBox(nimekiri);
+		String[] empList = {"Töötaja1", "Töötaja1", "Töötaja3"};
+		JComboBox chooseEmpCombo = new JComboBox(empList);
+		JTextField wHField = new JTextField();
 		
 		JButton addEmpBtn = new JButton("Lisa töötaja");
 		JButton addBtn = new JButton("Add");
@@ -66,17 +57,12 @@ public class DetailsPanel extends JPanel {
 		addBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-					String eesnimi = nameField.getText();
-					String perenimi = pknimiField.getText();
-					Double tunnipalk = Double.parseDouble(tunnipalkField.getText());
-					Double mvm = Double.parseDouble(mvmField.getText());
-					Double kogumisP = Double.parseDouble(kPField.getText());
+					String employee = (String)chooseEmpCombo.getSelectedItem();
+					Double workedHours = Double.parseDouble(wHField.getText());
 					
-					//Tootaja tootaja1 = new Tootaja(eesnimi, perenimi, tunnipalk, mvm, kogumisP);
+					//String text = Arvestaja.bruto(tunnipalk, mvm) + "\n";
 					
-					String text = Arvestaja.bruto(tunnipalk, mvm) + "\n";
-					
-					fireDetailEvent(new DetailEvent(this, text));
+					//fireDetailEvent(new DetailEvent(this, text));
 			}
 			
 		});
@@ -92,63 +78,27 @@ public class DetailsPanel extends JPanel {
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
-		add(nameLabel, gc);
+		add(choosEmpLabel, gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 1;
-		add(pknimiLabel, gc);
-		
-		gc.gridx = 0;
-		gc.gridy = 2;
-		add(tunnipalkLabel, gc);
-		
-		gc.gridx = 0;
-		gc.gridy = 3;
-		add(mvmLabel, gc);
-		
-		gc.gridx = 0;
-		gc.gridy = 4;
-		add(kPLabel, gc);
-		
-		gc.gridx = 0;
-		gc.gridy = 5;
-		add(valiTootajaLabel, gc);
+		add(wHLabel, gc);
 		
 		// COL2
 		gc.gridx = 1;
 		gc.gridy = 0;
-		add(nameField, gc);
+		add(chooseEmpCombo, gc);
 		
 		gc.gridx = 1;
 		gc.gridy = 1;
-		add(pknimiField, gc);
-		
-		gc.gridx = 1;
-		gc.gridy = 2;
-		add(tunnipalkField, gc);
-		
-		gc.gridx = 1;
-		gc.gridy = 3;
-		add(mvmField, gc);
-		
-		gc.gridx = 1;
-		gc.gridy = 4;
-		add(kPField, gc);
-		
-		gc.gridx = 1;
-		gc.gridy = 5;
-		add(valiTootajaComboBox, gc);
-		
-		gc.gridx = 1;
-		gc.gridy = 6;
-		add(addEmpBtn, gc);
+		add(wHField, gc);
 		
 		//Final row
 		gc.weighty = 10;
 		
 		gc.anchor = GridBagConstraints.LAST_LINE_END;
 		gc.gridx = 1;
-		gc.gridy = 7;
+		gc.gridy = 2;
 		add(addBtn, gc);
 	
 	}

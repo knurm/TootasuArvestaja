@@ -1,4 +1,4 @@
-package tootasuArvestajaGUI;
+package wageCalculatorGUI;
 
 import java.util.EventListener;
 

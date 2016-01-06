@@ -1,4 +1,4 @@
-package tootasuArvestajaGUI;
+package wageCalculatorGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 		
 		JTextArea textArea= new JTextArea();
 		
-		JButton nupp = new JButton("Nupp");
+		JButton button = new JButton("Nupp");
 		
 		detailsPanel = new DetailsPanel();
 		
@@ -33,10 +33,10 @@ public class MainFrame extends JFrame {
 		Container aken = getContentPane();
 		
 		aken.add(textArea, BorderLayout.CENTER);
-		aken.add(nupp, BorderLayout.SOUTH);
+		aken.add(button, BorderLayout.SOUTH);
 		aken.add(detailsPanel, BorderLayout.CENTER);
 		
-		nupp.addActionListener(new ActionListener() {
+		button.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
