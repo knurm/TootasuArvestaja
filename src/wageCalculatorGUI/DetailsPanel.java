@@ -1,6 +1,5 @@
 package wageCalculatorGUI;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,23 +8,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.EventListenerList;
-
-import wageCalculator.Calculator;
 
 public class DetailsPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
-	
-	private EventListenerList listenerList = new EventListenerList();
 	
 	Double workedHours;
 	Double hourlyPay;
@@ -63,25 +53,36 @@ public class DetailsPanel extends JPanel {
 		calculateBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-					
+				
 				workedHours = Double.parseDouble(wHField.getText());
 				hourlyPay = Double.parseDouble(hPField.getText());
 				taxFreeMin = Double.parseDouble(tFMField.getText());
 				fundedPension = Double.parseDouble(fPField.getText());
 				
 				grossPay = wageCalculator.Calculator.GrossPay(hourlyPay, workedHours);
-				String gPString = grossPay.toString();	
-				textArea1.setText(gPString);
-				
 				unempTaxEmply = wageCalculator.Calculator.UnempTaxEmply(grossPay);
 				fundedPensionTax = wageCalculator.Calculator.FundedPensionTax(grossPay, fundedPension);
-				incomeTax = wageCalculator.Calculator.IncomeTax(grossPay, fundedPension, fundedPension, fundedPension);
-				netPay = wageCalculator.Calculator.NetPay(grossPay, unempTaxEmply, fundedPension, taxFreeMin);
+				incomeTax = wageCalculator.Calculator.IncomeTax(grossPay, unempTaxEmply, fundedPensionTax, taxFreeMin);
+				netPay = wageCalculator.Calculator.NetPay(grossPay, incomeTax, unempTaxEmply, fundedPensionTax);
 				socialTax = wageCalculator.Calculator.SocialTax(grossPay);
 				unempTaxEmplyr = wageCalculator.Calculator.UnempTaxEmplyr(grossPay);
-
 				
+				String gPString = String.format("%1.2f", grossPay);	
+				String uTEString = String.format("%1.2f", unempTaxEmply);
+				String fPTString = String.format("%1.2f", fundedPensionTax);	
+				String iTString = String.format("%1.2f", incomeTax);	
+				String nPString = String.format("%1.2f", netPay);
+				String sTString = String.format("%1.2f", socialTax);
+				String uTrString = String.format("%1.2f", unempTaxEmplyr);
 				
+				textArea1.setText("Bruto töötasu: " + gPString + " €\n" +
+								"Töötuskindlustus: " + uTEString + " €\n" + 
+								"Kogumispension: " + fPTString + " €\n" +
+								"Tulumaks: " + iTString + " €\n" +
+								"Neto töötasu: " + nPString + " €\n");
+				
+				textArea2.setText("Sotsiaalmaks: " + sTString + " €\n" +
+								"Töötuskindlustus: " + uTrString + " €\n");
 				
 			}
 			
