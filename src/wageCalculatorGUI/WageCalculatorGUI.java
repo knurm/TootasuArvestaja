@@ -12,7 +12,7 @@ public class WageCalculatorGUI {
 			public void run() {
 				JFrame window = new MainFrame("Töötasuarvestaja");
 				
-				window.setSize(700, 500);
+				window.setSize(600, 400);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setVisible(true);
 				

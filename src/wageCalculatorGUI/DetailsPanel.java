@@ -15,17 +15,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.EventListenerList;
 
 import wageCalculator.Calculator;
-import wageCalculator.Employee;
 
 public class DetailsPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private EventListenerList listenerList = new EventListenerList();
+	
+	Double workedHours;
+	Double hourlyPay;
+	Double taxFreeMin;
+	Double fundedPension;
+	Double grossPay;
+	Double unempTaxEmply;
+	Double fundedPensionTax;
+	Double incomeTax;
+	Double netPay;
+	Double socialTax;
+	Double unempTaxEmplyr;
 
 	public DetailsPanel() {
 		Dimension size = getPreferredSize();
@@ -34,35 +46,43 @@ public class DetailsPanel extends JPanel {
 		
 		setBorder(BorderFactory.createTitledBorder("Arvestaja"));
 		
-		JLabel choosEmpLabel = new JLabel("Vali töötaja: ");
 		JLabel wHLabel = new JLabel("Töötatud tunnid: ");
+		JLabel hPLabel = new JLabel("Tunnipalk: ");
+		JLabel tFMLabel = new JLabel("Maksuvaba miinimum: ");
+		JLabel fPLabel = new JLabel("Kogumispension: ");
 		
-		String[] empList = {"Töötaja1", "Töötaja1", "Töötaja3"};
-		JComboBox chooseEmpCombo = new JComboBox(empList);
-		JTextField wHField = new JTextField();
+		JTextField wHField = new JTextField(10);
+		JTextField hPField = new JTextField(10);
+		JTextField tFMField = new JTextField(10);
+		JTextField fPField = new JTextField(10);
+		JTextArea textArea1 = new JTextArea(10, 15);
+		JTextArea textArea2 = new JTextArea(10, 15);
 		
-		JButton addEmpBtn = new JButton("Lisa töötaja");
-		JButton addBtn = new JButton("Add");
+		JButton calculateBtn = new JButton("Arvesta");
 		
-		addEmpBtn.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				new AddEmpDialog(null, isEnabled(), "Lisa töötaja");
-				
-			}
-
-		});
-		
-		addBtn.addActionListener(new ActionListener() {
+		calculateBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-					String employee = (String)chooseEmpCombo.getSelectedItem();
-					Double workedHours = Double.parseDouble(wHField.getText());
 					
-					//String text = Arvestaja.bruto(tunnipalk, mvm) + "\n";
-					
-					//fireDetailEvent(new DetailEvent(this, text));
+				workedHours = Double.parseDouble(wHField.getText());
+				hourlyPay = Double.parseDouble(hPField.getText());
+				taxFreeMin = Double.parseDouble(tFMField.getText());
+				fundedPension = Double.parseDouble(fPField.getText());
+				
+				grossPay = wageCalculator.Calculator.GrossPay(hourlyPay, workedHours);
+				String gPString = grossPay.toString();	
+				textArea1.setText(gPString);
+				
+				unempTaxEmply = wageCalculator.Calculator.UnempTaxEmply(grossPay);
+				fundedPensionTax = wageCalculator.Calculator.FundedPensionTax(grossPay, fundedPension);
+				incomeTax = wageCalculator.Calculator.IncomeTax(grossPay, fundedPension, fundedPension, fundedPension);
+				netPay = wageCalculator.Calculator.NetPay(grossPay, unempTaxEmply, fundedPension, taxFreeMin);
+				socialTax = wageCalculator.Calculator.SocialTax(grossPay);
+				unempTaxEmplyr = wageCalculator.Calculator.UnempTaxEmplyr(grossPay);
+
+				
+				
+				
 			}
 			
 		});
@@ -78,52 +98,53 @@ public class DetailsPanel extends JPanel {
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
-		add(choosEmpLabel, gc);
+		add(wHLabel, gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 1;
-		add(wHLabel, gc);
+		add(hPLabel, gc);
+		
+		gc.gridx = 0;
+		gc.gridy = 2;
+		add(tFMLabel, gc);
+		
+		gc.gridx = 0;
+		gc.gridy = 3;
+		add(fPLabel, gc);
 		
 		// COL2
 		gc.gridx = 1;
 		gc.gridy = 0;
-		add(chooseEmpCombo, gc);
+		add(wHField, gc);
 		
 		gc.gridx = 1;
 		gc.gridy = 1;
-		add(wHField, gc);
+		add(hPField, gc);
+		
+		gc.gridx = 1;
+		gc.gridy = 2;
+		add(tFMField, gc);
+		
+		gc.gridx = 1;
+		gc.gridy = 3;
+		add(fPField, gc);
+		
+		gc.gridx = 1;
+		gc.gridy = 4;
+		add(calculateBtn, gc);
 		
 		//Final row
 		gc.weighty = 10;
 		
-		gc.anchor = GridBagConstraints.LAST_LINE_END;
+		gc.anchor = GridBagConstraints.WEST;
+		gc.gridx = 0;
+		gc.gridy = 5;
+		add(textArea1, gc);
+		
 		gc.gridx = 1;
-		gc.gridy = 2;
-		add(addBtn, gc);
+		gc.gridy = 5;
+		add(textArea2, gc);
 	
-	}
-	
-	protected void call() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fireDetailEvent(DetailEvent event) {
-		Object[] listeners = listenerList.getListenerList();
-		
-		for (int i = 0; i < listeners.length; i += 2) {
-			if(listeners[i] == DetailListener.class) {
-				((DetailListener)listeners[i + 1]).detailEventOccurred(event);
-			}
-		}
-	}
-	
-	public void addDetailListener(DetailListener listener) {
-		listenerList.add(DetailListener.class, listener);
-	}
-	
-	public void removeDetailListener(DetailListener listener) {
-		listenerList.remove(DetailListener.class, listener);	
 	}
 
 }

@@ -20,31 +20,13 @@ public class MainFrame extends JFrame {
 		
 		JTextArea textArea= new JTextArea();
 		
-		JButton button = new JButton("Nupp");
-		
 		detailsPanel = new DetailsPanel();
 		
-		detailsPanel.addDetailListener(new DetailListener() {
-			public void detailEventOccurred(DetailEvent event) {
-				String text = event.getText();
-			}
-		});
+		Container window = getContentPane();
 		
-		Container aken = getContentPane();
+		window.add(textArea, BorderLayout.CENTER);
+		window.add(detailsPanel, BorderLayout.CENTER);
 		
-		aken.add(textArea, BorderLayout.CENTER);
-		aken.add(button, BorderLayout.SOUTH);
-		aken.add(detailsPanel, BorderLayout.CENTER);
-		
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				textArea.append("I WANT TO SLEEP!!!\n");
-				
-			}
-			
-		});
 	}
 
 }
