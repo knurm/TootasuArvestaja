@@ -44,7 +44,7 @@ public class Calculator {
 
 	}
 
-	public static double TaxSum(double[] taxArray, double sumVariable) {
+	public static double TaxSum (double[] taxArray, double sumVariable) {
 
 		for(int i = 0; i < taxArray.length; i++) {
 
