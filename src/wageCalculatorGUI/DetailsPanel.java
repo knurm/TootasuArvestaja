@@ -14,9 +14,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class DetailsPanel extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	double workedHours;
 	double hourlyPay;
 	double taxFreeMin;
@@ -28,6 +28,7 @@ public class DetailsPanel extends JPanel {
 	double netPay;
 	double socialTax;
 	double unempTaxEmplyr;
+	
 	double[] employerTaxes;
 	double[] employeeTaxes;
 
@@ -35,32 +36,32 @@ public class DetailsPanel extends JPanel {
 		Dimension size = getPreferredSize();
 		size.width = 400;
 		setPreferredSize(size);
-		
+
 		setBorder(BorderFactory.createTitledBorder("Arvestaja"));
-		
+
 		JLabel wHLabel = new JLabel("Töötatud tunnid: ");
 		JLabel hPLabel = new JLabel("Tunnipalk: ");
 		JLabel tFMLabel = new JLabel("Maksuvaba miinimum: ");
 		JLabel fPLabel = new JLabel("Kogumispension: ");
-		
+
 		JTextField wHField = new JTextField(10);
 		JTextField hPField = new JTextField(10);
 		JTextField tFMField = new JTextField(10);
 		JTextField fPField = new JTextField(10);
 		JTextArea textArea1 = new JTextArea(10, 15);
 		JTextArea textArea2 = new JTextArea(10, 15);
-		
+
 		JButton calculateBtn = new JButton("Arvesta");
-		
+
 		calculateBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
+
 				workedHours = Double.parseDouble(wHField.getText());
 				hourlyPay = Double.parseDouble(hPField.getText());
 				taxFreeMin = Double.parseDouble(tFMField.getText());
 				fundedPension = Double.parseDouble(fPField.getText());
-				
+
 				grossPay = wageCalculator.Calculator.GrossPay(hourlyPay, workedHours);
 				unempTaxEmply = wageCalculator.Calculator.UnempTaxEmply(grossPay);
 				fundedPensionTax = wageCalculator.Calculator.FundedPensionTax(grossPay, fundedPension);
@@ -68,15 +69,15 @@ public class DetailsPanel extends JPanel {
 				netPay = wageCalculator.Calculator.NetPay(grossPay, incomeTax, unempTaxEmply, fundedPensionTax);
 				socialTax = wageCalculator.Calculator.SocialTax(grossPay);
 				unempTaxEmplyr = wageCalculator.Calculator.UnempTaxEmplyr(grossPay);
-				
+
 				employerTaxes = new double[]{socialTax, unempTaxEmplyr};
 				employeeTaxes = new double[]{unempTaxEmply, fundedPensionTax, incomeTax};
-				
+
 				double TaxSum = 0;
-				
+
 				Double employerTaxSum = wageCalculator.Calculator.TaxSum(employerTaxes, TaxSum);
 				Double employeeTaxSum = wageCalculator.Calculator.TaxSum(employeeTaxes, TaxSum);
-				
+
 				String gPString = String.format("%1.2f", grossPay);	
 				String uTEString = String.format("%1.2f", unempTaxEmply);
 				String fPTString = String.format("%1.2f", fundedPensionTax);	
@@ -86,80 +87,89 @@ public class DetailsPanel extends JPanel {
 				String uTrString = String.format("%1.2f", unempTaxEmplyr);
 				String emplyrTS = String.format("%1.2f", employerTaxSum);
 				String emplyeeTS = String.format("%1.2f", employeeTaxSum);
-				
+
 				textArea1.setText("Bruto töötasu: " + gPString + " €\n" +
-								"Töötuskindlustus: " + uTEString + " €\n" + 
-								"Kogumispension: " + fPTString + " €\n" +
-								"Tulumaks: " + iTString + " €\n" +
-								"Töötaja maksud kokku: " + emplyeeTS + " €\n" +
-								"Neto töötasu: " + nPString + " €\n");
-				
+						"\n" +
+						"Töötuskindlustus: " + uTEString + " €\n" + 
+						"Kogumispension: " + fPTString + " €\n" +
+						"Tulumaks: " + iTString + " €\n" +
+						"_______________________\n" +
+						"Töötaja maksud kokku: " + emplyeeTS + " €\n" +
+						"\n" +
+						"Neto töötasu: " + nPString + " €\n");
+
 				textArea2.setText("Sotsiaalmaks: " + sTString + " €\n" +
-								"Töötuskindlustus: " + uTrString + " €\n" +
-								"Tööandja maksud kokku: " + emplyrTS + " €\n");
-				
+						"Töötuskindlustus: " + uTrString + " €\n" +
+						"_______________________\n" +
+						"Tööandja maksud kokku: " + emplyrTS + " €\n");
+
+				wHField.setText("");
+				hPField.setText("");
+				tFMField.setText("");
+				fPField.setText("");
+
 			}
-			
+
 		});
-		
+
 		setLayout(new GridBagLayout());
-		
+
 		GridBagConstraints gc = new GridBagConstraints();
-		
+
 		// COL1
 		gc.anchor = GridBagConstraints.LINE_START;
 		gc.weightx = 0.5;
 		gc.weighty = 0.5;
-		
+
 		gc.gridx = 0;
 		gc.gridy = 0;
 		add(wHLabel, gc);
-		
+
 		gc.gridx = 0;
 		gc.gridy = 1;
 		add(hPLabel, gc);
-		
+
 		gc.gridx = 0;
 		gc.gridy = 2;
 		add(tFMLabel, gc);
-		
+
 		gc.gridx = 0;
 		gc.gridy = 3;
 		add(fPLabel, gc);
-		
+
 		// COL2
 		gc.gridx = 1;
 		gc.gridy = 0;
 		add(wHField, gc);
-		
+
 		gc.gridx = 1;
 		gc.gridy = 1;
 		add(hPField, gc);
-		
+
 		gc.gridx = 1;
 		gc.gridy = 2;
 		add(tFMField, gc);
-		
+
 		gc.gridx = 1;
 		gc.gridy = 3;
 		add(fPField, gc);
-		
+
 		gc.gridx = 1;
 		gc.gridy = 4;
 		add(calculateBtn, gc);
-		
-		//Final row
+
+		//Last row
 		gc.weighty = 10;
-		
+
 		gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 5;
 		add(textArea1, gc);
-		
+
 		gc.gridx = 1;
 		gc.gridy = 5;
 		add(textArea2, gc);
-	
+
 	}
 
 }
