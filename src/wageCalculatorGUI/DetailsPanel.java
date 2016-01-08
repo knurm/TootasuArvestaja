@@ -17,17 +17,19 @@ public class DetailsPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
-	Double workedHours;
-	Double hourlyPay;
-	Double taxFreeMin;
-	Double fundedPension;
-	Double grossPay;
-	Double unempTaxEmply;
-	Double fundedPensionTax;
-	Double incomeTax;
-	Double netPay;
-	Double socialTax;
-	Double unempTaxEmplyr;
+	double workedHours;
+	double hourlyPay;
+	double taxFreeMin;
+	double fundedPension;
+	double grossPay;
+	double unempTaxEmply;
+	double fundedPensionTax;
+	double incomeTax;
+	double netPay;
+	double socialTax;
+	double unempTaxEmplyr;
+	double[] employerTaxes;
+	double[] employeeTaxes;
 
 	public DetailsPanel() {
 		Dimension size = getPreferredSize();
@@ -67,6 +69,14 @@ public class DetailsPanel extends JPanel {
 				socialTax = wageCalculator.Calculator.SocialTax(grossPay);
 				unempTaxEmplyr = wageCalculator.Calculator.UnempTaxEmplyr(grossPay);
 				
+				employerTaxes = new double[]{socialTax, unempTaxEmplyr};
+				employeeTaxes = new double[]{unempTaxEmply, fundedPensionTax, incomeTax};
+				
+				double TaxSum = 0;
+				
+				Double employerTaxSum = wageCalculator.Calculator.TaxSum(employerTaxes, TaxSum);
+				Double employeeTaxSum = wageCalculator.Calculator.TaxSum(employeeTaxes, TaxSum);
+				
 				String gPString = String.format("%1.2f", grossPay);	
 				String uTEString = String.format("%1.2f", unempTaxEmply);
 				String fPTString = String.format("%1.2f", fundedPensionTax);	
@@ -74,15 +84,19 @@ public class DetailsPanel extends JPanel {
 				String nPString = String.format("%1.2f", netPay);
 				String sTString = String.format("%1.2f", socialTax);
 				String uTrString = String.format("%1.2f", unempTaxEmplyr);
+				String emplyrTS = String.format("%1.2f", employerTaxSum);
+				String emplyeeTS = String.format("%1.2f", employeeTaxSum);
 				
 				textArea1.setText("Bruto töötasu: " + gPString + " €\n" +
 								"Töötuskindlustus: " + uTEString + " €\n" + 
 								"Kogumispension: " + fPTString + " €\n" +
 								"Tulumaks: " + iTString + " €\n" +
+								"Töötaja maksud kokku: " + emplyeeTS + " €\n" +
 								"Neto töötasu: " + nPString + " €\n");
 				
 				textArea2.setText("Sotsiaalmaks: " + sTString + " €\n" +
-								"Töötuskindlustus: " + uTrString + " €\n");
+								"Töötuskindlustus: " + uTrString + " €\n" +
+								"Tööandja maksud kokku: " + emplyrTS + " €\n");
 				
 			}
 			
